@@ -1,3 +1,13 @@
+'''
+ real-time emotion detection
+ and music recommendation system using computer vision and deep learning
+ captures video frames from a camera,
+ detects face and hand landmarks,
+ predicts the emotion of the person in the frame,
+ and recommends a song based on that emotion.
+ The recommended song is chosen from a list of songs associated with different emotions in the CSV file.
+'''
+
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -29,7 +39,7 @@ if "relax" in emotion_songs:
     relax_songs = emotion_songs["relax"]
 else:
     relax_songs = []
-
+#mediapipe holistic model to detect facial and body key points
 holistic = mp.solutions.holistic
 hands = mp.solutions.hands
 holis = holistic.Holistic()
@@ -89,7 +99,7 @@ while True:
         # else:
         #     recommended_song = "No song found for this emotion"
 
-        #for detectormodel.h5 and emotionlabels.npy
+        # #for detectormodel.h5 and emotionlabels.npy
         if "angry" in emotion_songs and "angry" == detected_emotion:
             recommended_song = random.choice(emotion_songs["angry"]) if "angry" in emotion_songs else "No matching song found"
         elif "happy" in emotion_songs and "happy" == detected_emotion:

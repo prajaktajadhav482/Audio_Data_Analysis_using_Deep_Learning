@@ -1,3 +1,14 @@
+'''
+audio genre classification using MFCC features and KNN classification.
+ It first extracts audio features from a set of audio files,
+ builds a KNN classifier using a portion of the data,
+ and then tests the classifier's accuracy on the remaining data.
+ Additionally, it predicts the genre of a given audio feature and associates it with a genre label based on a provided directory structure.
+'''
+
+
+
+
 import numpy as np
 import pandas as pd
 import scipy.io.wavfile as wav

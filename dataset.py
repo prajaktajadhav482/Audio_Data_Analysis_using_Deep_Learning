@@ -1,21 +1,30 @@
+'''
+captures video frames from a camera,
+extracts facial and hand landmarks using the MediaPipe library,
+and then saves the landmark data to a NumPy array in a .npy file for further use in machine learning models.
+The user can specify the name of the output file to distinguish different data collections.
+'''
+
 import mediapipe as mp
 import numpy as np
 import cv2
 
 cap = cv2.VideoCapture(0)
 
-name = input("Enter the name of the data : ")
+name = input("Enter the name of the data : ") #used to name output .npy file
 
+# Create instances of the MediaPipe holistic and hands models for extracting facial and hand landmarks.
 holistic = mp.solutions.holistic
 hands = mp.solutions.hands
 holis = holistic.Holistic()
 drawing = mp.solutions.drawing_utils
 
-X = []
-data_size = 0
+X = [] # to store extracted landmark data
+data_size = 0 # counter to keep track of the number of data points collected.
+              #(frames with detected facial landmarks)
 
 while True:
-    lst = []
+    lst = [] #store the landmark data for the current frame.
 
     _, frm = cap.read()
 
@@ -45,7 +54,7 @@ while True:
                 lst.append(0.0)
 
         X.append(lst)
-        data_size = data_size + 1
+        data_size = data_size + 1 #Display the current data size (number of data points collected) on the frame.
 
     drawing.draw_landmarks(frm, res.face_landmarks, holistic.FACEMESH_CONTOURS)
     drawing.draw_landmarks(frm, res.left_hand_landmarks, hands.HAND_CONNECTIONS)
@@ -62,3 +71,10 @@ while True:
 
 np.save(f"{name}.npy", np.array(X))
 print(np.array(X).shape)
+
+'''
+The loop exits either when the 'Esc' key (key code 27) is pressed 
+or when the data_size exceeds 99 data points (frames).
+the printed shape of the NumPy array will indicate the dimensions of the data collected, 
+typically in the form of (number of data points, number of features).
+'''
